@@ -70,71 +70,65 @@
         please contact the sales department at sales@jahia.com.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>jahia-modules</artifactId>
-        <groupId>org.jahia.modules</groupId>
-        <version>7.0.0.0-SNAPSHOT</version>
-    </parent>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
     <groupId>org.jahia.modules</groupId>
-    <artifactId>portal-factory_esigate-filter</artifactId>
-    <name>Portal factory - esigate filter</name>
-    <version>1.0-SNAPSHOT</version>    
-    <packaging>bundle</packaging>
-    <description>This is the custom module (Portal factory - esigate filter) for running on a Digital Factory server.</description>
-
-    <scm>
-        <connection>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</connection>
-        <developerConnection>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</developerConnection>
-        <url>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</url>
-    </scm>
-
-    <repositories>
-        <repository>
-            <id>jahia-public</id>
-            <name>Jahia Public Repository</name>
-            <url>https://devtools.jahia.com/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.esigate</groupId>
-            <artifactId>esigate-servlet</artifactId>
-            <version>5.0-beta-1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
-            <version>${slf4j.version}</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Import-Package>sun.misc;resolution:=optional, com.ibm.uvm.tools;resolution:=optional, com.sun.jdmk.comm;resolution:=optional, javax.jmdns;resolution:=optional, org.apache.avalon.framework.logger;resolution:=optional, org.apache.log;resolution:=optional, sun.security.util;resolution:=optional,javax.jms;resolution:=optional,junit.framework;resolution:=optional,net.spy.memcached;resolution:=optional,org.mozilla.intl.chardet;resolution:=optional,${jahia.plugin.projectPackageImport},*</Import-Package>
-                        <Jahia-Depends>default</Jahia-Depends>
-                    </instructions>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <artifactId>jahia-modules</artifactId>
+    <version>7.0.0.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.jahia.modules</groupId>
+  <artifactId>portal-factory_esigate-filter</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+  <name>Portal factory - esigate filter</name>
+  <description>This is the custom module (Portal factory - esigate filter) for running on a Digital Factory server.</description>
+  <scm>
+    <connection>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</connection>
+    <developerConnection>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</developerConnection>
+    <url>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.esigate</groupId>
+      <artifactId>esigate-servlet</artifactId>
+      <version>5.0-beta-1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>jahia-public</id>
+      <name>Jahia Public Repository</name>
+      <url>https://devtools.jahia.com/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Import-Package>sun.misc;resolution:=optional, com.ibm.uvm.tools;resolution:=optional, com.sun.jdmk.comm;resolution:=optional, javax.jmdns;resolution:=optional, org.apache.avalon.framework.logger;resolution:=optional, org.apache.log;resolution:=optional, sun.security.util;resolution:=optional,javax.jms;resolution:=optional,junit.framework;resolution:=optional,net.spy.memcached;resolution:=optional,org.mozilla.intl.chardet;resolution:=optional,${jahia.plugin.projectPackageImport},*</Import-Package>
+            <Jahia-Depends>default</Jahia-Depends>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
