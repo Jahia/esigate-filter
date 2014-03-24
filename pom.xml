@@ -108,6 +108,20 @@
         </repository>
     </repositories>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.esigate</groupId>
+            <artifactId>esigate-servlet</artifactId>
+            <version>5.0-beta-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+            <version>${slf4j.version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -116,6 +130,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
+                        <Import-Package>sun.misc;resolution:=optional, com.ibm.uvm.tools;resolution:=optional, com.sun.jdmk.comm;resolution:=optional, javax.jmdns;resolution:=optional, org.apache.avalon.framework.logger;resolution:=optional, org.apache.log;resolution:=optional, sun.security.util;resolution:=optional,javax.jms;resolution:=optional,junit.framework;resolution:=optional,net.spy.memcached;resolution:=optional,org.mozilla.intl.chardet;resolution:=optional,${jahia.plugin.projectPackageImport},*</Import-Package>
                         <Jahia-Depends>default</Jahia-Depends>
                     </instructions>
                 </configuration>
