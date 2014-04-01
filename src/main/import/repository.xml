@@ -5,6 +5,7 @@
                                      j:modulePriority="0"
                                      j:moduleType="module"
                                      j:title="Portal factory - esigate filter"
+                                     jcr:mixinTypes="jmix:hasExternalProviderExtension"
                                      jcr:primaryType="jnt:module">
                 
                 <portlets jcr:primaryType="jnt:portletFolder"/>
