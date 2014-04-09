@@ -25,6 +25,8 @@ public class EsigateProxyFilter extends AbstractServletFilter {
 
     @Override
     public void destroy() {
-        proxyFilter.destroy();
+        if(proxyFilter != null){
+            proxyFilter.destroy();
+        }
     }
 }
