@@ -125,7 +125,8 @@
         <configuration>
           <instructions>
             <Import-Package>sun.misc;resolution:=optional, com.ibm.uvm.tools;resolution:=optional, com.sun.jdmk.comm;resolution:=optional, javax.jmdns;resolution:=optional, org.apache.avalon.framework.logger;resolution:=optional, org.apache.log;resolution:=optional, sun.security.util;resolution:=optional,javax.jms;resolution:=optional,junit.framework;resolution:=optional,net.spy.memcached;resolution:=optional,org.mozilla.intl.chardet;resolution:=optional,${jahia.plugin.projectPackageImport},*</Import-Package>
-            <Jahia-Depends>default</Jahia-Depends>
+            <Jahia-Depends>default,serverSettings</Jahia-Depends>
+            <Export-Package>org.jahia.modules.portalFactory.esigate</Export-Package>
           </instructions>
         </configuration>
       </plugin>

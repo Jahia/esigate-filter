@@ -6,3 +6,12 @@
 [jnt:esiFragmentArea] > jnt:area, jmix:esiComponentContent
 
 [jnt:esiFragmentList] > jnt:contentList, jmix:esiComponentContent
+
+//---------------------------------------------------------
+// Esigate admin
+//---------------------------------------------------------
+
+[jnt:serverSettingsEsigate] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent
+
+[jnt:esigateServerSettings] > nt:base
+ - j:enabled (boolean) = false indexed=no
