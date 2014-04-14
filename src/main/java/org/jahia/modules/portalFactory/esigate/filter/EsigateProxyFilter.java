@@ -1,8 +1,11 @@
 package org.jahia.modules.portalFactory.esigate.filter;
 
+import org.esigate.DriverFactory;
 import org.esigate.servlet.ProxyFilter;
 import org.jahia.bin.filters.AbstractServletFilter;
 import org.jahia.modules.portalFactory.esigate.EsigateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import java.io.IOException;
@@ -11,20 +14,24 @@ import java.io.IOException;
  * Created by kevan on 24/03/14.
  */
 public class EsigateProxyFilter extends AbstractServletFilter {
-    ProxyFilter proxyFilter;
+    private static Logger logger = LoggerFactory.getLogger(EsigateService.class);
 
+    ProxyFilter proxyFilter;
     EsigateService esigateService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         proxyFilter = new ProxyFilter();
-        //todo Driver.config with saved settings
+        try {
+            DriverFactory.configure(EsigateService.stringToProperties(esigateService.getSettings().getConfig()));
+        } catch (IOException e) {
+            logger.error("Unable to transform string to properties", e);
+        }
         proxyFilter.init(filterConfig);
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        //todo test if enabled
         if (esigateService.isEnabled()){
             proxyFilter.doFilter(servletRequest, servletResponse, filterChain);
         }else {

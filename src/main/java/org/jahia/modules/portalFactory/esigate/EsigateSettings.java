@@ -9,6 +9,15 @@ public class EsigateSettings implements Serializable{
     private static final long serialVersionUID = -1705739194553241923L;
 
     private boolean serviceEnabled;
+    private String config;
+
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
+    }
 
     public boolean isServiceEnabled() {
         return serviceEnabled;

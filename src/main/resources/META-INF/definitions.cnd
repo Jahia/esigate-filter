@@ -15,3 +15,4 @@
 
 [jnt:esigateServerSettings] > nt:base
  - j:enabled (boolean) = false indexed=no
+ - j:config (string)

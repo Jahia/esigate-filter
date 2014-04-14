@@ -21,6 +21,8 @@
 
 <template:addResources type="javascript" resources="jquery.min.js,jquery-ui.min.js,admin-bootstrap.js,bootstrapSwitch.js"/>
 <template:addResources type="css" resources="jquery-ui.smoothness.css,jquery-ui.smoothness-jahia.css,bootstrapSwitch.css"/>
+<template:addResources type="javascript" resources="codemirror.jahia.min.js"/>
+<template:addResources type="css" resources="codemirror/codemirror.css"/>
 
 <h2>
     Esigate settings
@@ -51,9 +53,23 @@
         </div>
 
         <div class="control-group">
+            <label class="control-label">Configuration &nbsp;:</label>
+            <div class="controls ">
+                <textarea id="config" name="config"><c:out value="${functions:unescapeJava(esigateSettings.config)}" escapeXml="true"/></textarea>
+            </div>
+        </div>
+
+        <div class="control-group">
             <div class="controls">
+                <fmt:message var="i18nReloadConfirm" key="serverSettings.esigateSettings.reloadDefaultConfirm"/><c:set var="i18nReloadConfirm" value="${functions:escapeJavaScript(i18nReloadConfirm)}"/>
                 <button class="btn btn-primary" type="submit" name="_eventId_submitSettings"><i class="icon-ok icon-white"></i>&nbsp;<fmt:message key="label.save"/></button>
+                <button class="btn" type="submit" onclick="return confirm('${i18nReloadConfirm}');" name="_eventId_reloadDefault"><i class="icon-circle-arrow-down"></i>&nbsp;<fmt:message key="serverSettings.esigateSettings.reloadDefault"/></button>
             </div>
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    var configCodeMirror = CodeMirror.fromTextArea(document.getElementById("config"), {mode: "properties", lineNumbers: true, matchBrackets: true, readOnly: false});
+    configCodeMirror.setSize("100%", "300px");
+</script>

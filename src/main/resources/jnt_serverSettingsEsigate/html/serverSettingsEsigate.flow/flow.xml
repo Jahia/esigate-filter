@@ -7,13 +7,15 @@
 
     <var name="flowHandler" class="org.jahia.modules.portalFactory.esigate.flow.EsigateFlowHandler"/>
 
-    <on-start>
-        <evaluate expression="flowHandler.getSettings()" result="flowScope.esigateSettings"/>
-    </on-start>
-
     <view-state id="view" model="esigateSettings">
+        <on-render>
+            <evaluate expression="flowHandler.getSettings()" result="flowScope.esigateSettings"/>
+        </on-render>
         <transition on="submitSettings" to="view">
             <evaluate expression="flowHandler.saveSettings(esigateSettings)"/>
+        </transition>
+        <transition on="reloadDefault" to="view">
+            <evaluate expression="flowHandler.reloadDefault()"/>
         </transition>
     </view-state>
 </flow>

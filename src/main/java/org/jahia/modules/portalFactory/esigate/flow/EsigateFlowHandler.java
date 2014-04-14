@@ -23,6 +23,10 @@ public class EsigateFlowHandler implements Serializable {
         esigateService.store(settings);
     }
 
+    public void reloadDefault(){
+        esigateService.reloadDefault();
+    }
+
     public void setEsigateService(EsigateService esigateService) {
         this.esigateService = esigateService;
     }
