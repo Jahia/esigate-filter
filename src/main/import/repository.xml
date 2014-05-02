@@ -12,16 +12,29 @@
                 <files jcr:primaryType="jnt:folder"/>
                 <contents jcr:primaryType="jnt:contentFolder"/>
                 <templates j:rootTemplatePath="/base" jcr:primaryType="jnt:templatesFolder">
-                    <files jcr:primaryType="jnt:folder"/>
+                    <files jcr:primaryType="jnt:folder">
+                        <Portal-Factory-icon.png j:height="16"
+                                                 j:width="16"
+                                                 jcr:mixinTypes="jmix:image"
+                                                 jcr:primaryType="jnt:file">
+                            <jcr:content jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                        </Portal-Factory-icon.png>
+                    </files>
                     <contents jcr:primaryType="jnt:contentFolder"/>
                     <server-settings-base j:view="serverSettings"
                                   jcr:mixinTypes="jmix:useUILocale"
                                   jcr:primaryType="jnt:template">
-                        <configurations j:hiddenTemplate="false" jcr:primaryType="jnt:template">
+                        <portal-factory j:hiddenTemplate="false"
+                               j:icon="/modules/portal-factory_esigate-filter/templates/files/Portal-Factory-icon.png"
+                               j:titleKey="serverSettings.portalfactory"
+                               jcr:mixinTypes="jmix:rbTitle"
+                               jcr:primaryType="jnt:template">
                             <j:translation_en jcr:language="en"
                                     jcr:mixinTypes="mix:title"
                                     jcr:primaryType="jnt:translation"
-                                    jcr:title="configurations"/>
+                                    jcr:title="portal factory"/>
                         <esigate j:applyOn="jnt:globalSettings"
                         j:defaultTemplate="false"
                         j:hiddenTemplate="false"
@@ -42,7 +55,7 @@
                                 </esigate-admin>
                             </pagecontent>
                         </esigate>
-                        </configurations>
+                        </portal-factory>
                     </server-settings-base>
                 </templates>
                 
