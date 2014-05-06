@@ -11,12 +11,14 @@ import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
 import org.jahia.services.content.JCRTemplate;
 import org.jahia.services.templates.JahiaTemplateManagerService;
+import org.jahia.settings.SettingsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -53,10 +55,10 @@ public class EsigateService implements InitializingBean {
         }
     }
 
-    public void reloadDefault() {
+    public void reloadDefault(HttpServletRequest request) {
         EsigateSettings defaultSettings = new EsigateSettings();
         defaultSettings.setServiceEnabled(false);
-        defaultSettings.setConfig(getDefaultConfig());
+        defaultSettings.setConfig(getDefaultConfig(request));
         store(defaultSettings);
     }
 
@@ -74,7 +76,7 @@ public class EsigateService implements InitializingBean {
                         .addNode("esigate-server", "jnt:esigateServerSettings");
             }
         }
-
+        boolean wasEnabled = esigateNode.hasProperty("j:enabled") && esigateNode.getProperty("j:enabled").getBoolean();
         esigateNode.setProperty("j:enabled", cfg.isServiceEnabled());
         try {
             Properties oldProperties = stringToProperties(esigateNode.getPropertyAsString("j:config"));
@@ -106,9 +108,8 @@ public class EsigateService implements InitializingBean {
                         cfg.setConfig(esigateNode.getPropertyAsString("j:config"));
                     } catch (PathNotFoundException e) {
                         cfg.setServiceEnabled(false);
-                        cfg.setConfig(getDefaultConfig());
+                        cfg.setConfig("");
                         store(cfg, session);
-
                     }
 
                     return cfg;
@@ -120,12 +121,19 @@ public class EsigateService implements InitializingBean {
         }
     }
 
-    private String getDefaultConfig() {
+    private String getDefaultConfig(HttpServletRequest request) {
         JahiaTemplatesPackage jahiaTemplatesPackage = getCurrentJahiaTemplatePackage();
         URL configUrl = jahiaTemplatesPackage.getBundle().getResource("jahia-esigate.properties");
 
         try {
-            return Resources.toString(configUrl, Charsets.UTF_8);
+            String config = Resources.toString(configUrl, Charsets.UTF_8);
+            final SettingsBean settingsBean = SettingsBean.getInstance();
+            int port = settingsBean.getSiteURLPortOverride();
+            if (port == 0) {
+                port = request.getServerPort();
+            }
+            config += "remoteUrlBase=http://localhost:" + port + "/" + settingsBean.getServletContext().getContextPath() + "\n";
+            return config;
         } catch (IOException e) {
             logger.error("Unable to load default esigate properties from esigate.properties file", e);
             return null;

@@ -9,13 +9,13 @@
 
     <view-state id="view" model="esigateSettings">
         <on-render>
-            <evaluate expression="flowHandler.getSettings()" result="flowScope.esigateSettings"/>
+            <evaluate expression="flowHandler.getSettings(externalContext.nativeRequest)" result="flowScope.esigateSettings"/>
         </on-render>
         <transition on="submitSettings" to="view">
             <evaluate expression="flowHandler.saveSettings(esigateSettings)"/>
         </transition>
         <transition on="reloadDefault" to="view">
-            <evaluate expression="flowHandler.reloadDefault()"/>
+            <evaluate expression="flowHandler.reloadDefault(externalContext.nativeRequest)"/>
         </transition>
     </view-state>
 </flow>
