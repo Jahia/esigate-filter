@@ -2,7 +2,13 @@ package org.jahia.modules.portalFactory.esigate.filter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.esigate.Driver;
 import org.esigate.DriverFactory;
 import org.esigate.HttpErrorPage;
@@ -20,7 +26,11 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kevan on 24/03/14.
@@ -49,7 +59,24 @@ public class EsigateProxyFilter extends AbstractServletFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+
         IncomingRequest incomingRequest = requestFactory.create(httpServletRequest, httpServletResponse, chain);
+
+        if (request.getInputStream().available() == 0 && request.getContentLength() > 0) {
+            // Recreate an input stream from parameters if it has been read already.
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+                for (String value : entry.getValue()) {
+                    parameters.add(new BasicNameValuePair(entry.getKey(), value));
+                }
+            }
+            String encoded = URLEncodedUtils.format(parameters, incomingRequest.getEntity().getContentEncoding().getValue());
+            InputStreamEntity entity = new InputStreamEntity(new ByteArrayInputStream(encoded.getBytes()), encoded.length());
+            entity.setContentEncoding(incomingRequest.getEntity().getContentEncoding().getValue());
+            entity.setContentType(incomingRequest.getEntity().getContentType().getValue());
+            incomingRequest.setEntity(entity);
+        }
+
         Pair<Driver, UriMapping> dm = null;
         try {
             dm = driverSelector.selectProvider(httpServletRequest, false);
