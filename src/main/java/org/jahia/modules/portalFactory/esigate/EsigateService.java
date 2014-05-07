@@ -140,6 +140,18 @@ public class EsigateService implements InitializingBean {
         }
     }
 
+    public String getNewProviderConfig() {
+        JahiaTemplatesPackage jahiaTemplatesPackage = getCurrentJahiaTemplatePackage();
+        URL configUrl = jahiaTemplatesPackage.getBundle().getResource("new-provider.properties");
+
+        try {
+            return Resources.toString(configUrl, Charsets.UTF_8);
+        } catch (IOException e) {
+            logger.error("Unable to load default esigate properties from esigate.properties file", e);
+            return null;
+        }
+    }
+
     public static String propertiesToString(Properties properties) {
         StringWriter writer = new StringWriter();
         try {

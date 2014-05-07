@@ -24,11 +24,15 @@ import java.util.Properties;
  * Add default ESI tags
  */
 public class JahiaEsiExtension implements Extension, IEventListener {
-    private UrlRewriter urlRewriter;
+    private String defaultPageInclude;
+    private String defaultFragmentReplace;
+
     @Override
     public void init(Driver driver, Properties properties) {
         driver.getEventManager().register(EventManager.EVENT_RENDER_PRE, this);
-      }
+        defaultPageInclude = properties.getProperty("defaultPageInclude");
+        defaultFragmentReplace = properties.getProperty("defaultFragmentReplace");
+    }
 
     @Override
     public boolean event(EventDefinition id, Event event) {
@@ -41,9 +45,9 @@ public class JahiaEsiExtension implements Extension, IEventListener {
                 final String workspace = originalRequest.getOriginalRequest().getAttribute("jahia.workspace");
                 final String language = originalRequest.getOriginalRequest().getAttribute("jahia.language");
 
-                if (!src.contains("<esi:")) {
-                    src = "<esi:include src=\"$(PROVIDER{default})/cms/$(jahia.workspace)/$(jahia.language)/sites/mySite/home.html\">" +
-                            "<esi:replace fragment=\"col1\">" +
+                if (!src.contains("<esi:") && defaultPageInclude != null) {
+                    src = "<esi:include src=\"$(PROVIDER{default})/cms/$(jahia.workspace)/$(jahia.language)"+defaultPageInclude+"\">" +
+                            "<esi:replace fragment=\""+defaultFragmentReplace+"\">" +
                             src +
                             "</esi:replace>" +
                             "</esi:include>";

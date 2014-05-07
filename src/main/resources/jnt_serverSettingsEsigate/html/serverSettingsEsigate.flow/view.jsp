@@ -63,6 +63,7 @@
             <div class="controls">
                 <fmt:message var="i18nReloadConfirm" key="serverSettings.esigateSettings.reloadDefaultConfirm"/><c:set var="i18nReloadConfirm" value="${functions:escapeJavaScript(i18nReloadConfirm)}"/>
                 <button class="btn btn-primary" type="submit" name="_eventId_submitSettings"><i class="icon-ok icon-white"></i>&nbsp;<fmt:message key="label.save"/></button>
+                <button class="btn" type="submit" name="_eventId_viewAddProvider"><i class="icon-circle-arrow-down"></i>&nbsp;<fmt:message key="serverSettings.esigateSettings.addProvider"/></button>
                 <button class="btn" type="submit" onclick="return confirm('${i18nReloadConfirm}');" name="_eventId_reloadDefault"><i class="icon-circle-arrow-down"></i>&nbsp;<fmt:message key="serverSettings.esigateSettings.reloadDefault"/></button>
             </div>
         </div>

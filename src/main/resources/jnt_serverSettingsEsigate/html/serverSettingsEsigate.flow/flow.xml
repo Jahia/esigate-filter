@@ -17,5 +17,21 @@
         <transition on="reloadDefault" to="view">
             <evaluate expression="flowHandler.reloadDefault(externalContext.nativeRequest)"/>
         </transition>
+        <transition on="viewAddProvider" to="viewAddProvider">
+            <evaluate expression="flowHandler.createProviderBean(externalContext.nativeRequest)" result="flowScope.newProvider"/>
+        </transition>
     </view-state>
+
+    <view-state id="viewAddProvider" model="newProvider">
+        <transition on="submit" to="doAddProvider">
+
+        </transition>
+    </view-state>
+
+    <action-state id="doAddProvider">
+        <evaluate expression="flowHandler.saveNewProvider(flowScope.newProvider)"/>
+
+        <transition on="success" to="view"/>
+        <transition on="error" to="viewAddProvider"/>
+    </action-state>
 </flow>
