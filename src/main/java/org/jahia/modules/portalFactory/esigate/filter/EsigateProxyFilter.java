@@ -18,6 +18,7 @@ import org.esigate.servlet.impl.DriverSelector;
 import org.esigate.servlet.impl.RequestFactory;
 import org.esigate.servlet.impl.RequestUrl;
 import org.esigate.servlet.impl.ResponseSender;
+import org.jahia.bin.Render;
 import org.jahia.bin.filters.AbstractServletFilter;
 import org.jahia.modules.portalFactory.esigate.EsigateService;
 import org.slf4j.Logger;
@@ -25,12 +26,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by kevan on 24/03/14.
@@ -60,9 +60,14 @@ public class EsigateProxyFilter extends AbstractServletFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
+        boolean extCall = httpServletRequest.getServletPath().startsWith("/ext");
+        if (extCall && ((HttpServletRequest) request).getMethod().equals("POST")) {
+            httpServletRequest = new HttpServletRequestWithGetMethod(httpServletRequest);
+        }
+
         IncomingRequest incomingRequest = requestFactory.create(httpServletRequest, httpServletResponse, chain);
 
-        if (request.getInputStream().available() == 0 && request.getContentLength() > 0) {
+        if (extCall && request.getInputStream().available() == 0 && request.getContentLength() > 0) {
             // Recreate an input stream from parameters if it has been read already.
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
@@ -105,5 +110,39 @@ public class EsigateProxyFilter extends AbstractServletFilter {
 
     public void setEsigateService(EsigateService esigateService) {
         this.esigateService = esigateService;
+    }
+
+    private static class HttpServletRequestWithGetMethod extends HttpServletRequestWrapper {
+        public HttpServletRequestWithGetMethod(HttpServletRequest httpServletRequest) {
+            super(httpServletRequest);
+        }
+
+        @Override
+        public String getParameter(String name) {
+            if (name.equals(Render.METHOD_TO_CALL)) {
+                return "GET";
+            }
+            return super.getParameter(name);
+        }
+
+        @Override
+        public Map<String, String[]> getParameterMap() {
+            Map<String, String[]> parameters = new HashMap<String,String[]>(super.getParameterMap());
+            parameters.put(Render.METHOD_TO_CALL,new String[] {"GET"});
+            return parameters;
+        }
+
+        @Override
+        public Enumeration<String> getParameterNames() {
+            return new Vector<String>(getParameterMap().keySet()).elements();
+        }
+
+        @Override
+        public String[] getParameterValues(String name) {
+            if (name.equals(Render.METHOD_TO_CALL)) {
+                return new String[] {"GET"};
+            }
+            return super.getParameterValues(name);
+        }
     }
 }
