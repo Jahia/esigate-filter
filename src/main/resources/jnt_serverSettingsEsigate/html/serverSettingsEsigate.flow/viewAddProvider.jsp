@@ -71,9 +71,18 @@
         </div>
     </div>
 
-    <button class="btn btn-primary" type="submit" name="_eventId_submit">
-        <i class="icon-white"></i>
-        &nbsp;<fmt:message key="serverSettings.esigateSettings.addProvider"/>
-    </button>
+    <div class="control-group">
+
+        <div class="controls">
+            <button class="btn btn-primary" type="submit" name="_eventId_submit">
+                <i class="icon-white"></i>
+                &nbsp;<fmt:message key="serverSettings.esigateSettings.addProvider"/>
+            </button>
+            <button class="btn" type="submit" name="_eventId_cancel">
+                <i class="icon-white"></i>
+                &nbsp;<fmt:message key="serverSettings.esigateSettings.cancel"/>
+            </button>
+        </div>
+    </div>
 
 </form:form>

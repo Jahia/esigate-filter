@@ -23,9 +23,8 @@
     </view-state>
 
     <view-state id="viewAddProvider" model="newProvider">
-        <transition on="submit" to="doAddProvider">
-
-        </transition>
+        <transition on="submit" to="doAddProvider"/>
+        <transition on="cancel" to="view" bind="false" />
     </view-state>
 
     <action-state id="doAddProvider">
