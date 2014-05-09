@@ -11,6 +11,6 @@
 
     <bean id="esigateProxyFilter" class="org.jahia.modules.portalFactory.esigate.filter.EsigateProxyFilter">
         <property name="esigateService" ref="esigateService"/>
-        <property name="urlPatterns" value="/cms/render/live/*,/sites/*,/ext/*"/>
+        <property name="urlPatterns" value="/ext/*"/>
     </bean>
 </beans>
