@@ -21,6 +21,7 @@ import org.esigate.servlet.impl.ResponseSender;
 import org.jahia.bin.Render;
 import org.jahia.bin.filters.AbstractServletFilter;
 import org.jahia.modules.portalFactory.esigate.EsigateService;
+import org.jahia.utils.LanguageCodeConverters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,12 +88,20 @@ public class EsigateProxyFilter extends AbstractServletFilter {
             dm = driverSelector.selectProvider(httpServletRequest, false);
             String relUrl = RequestUrl.getRelativeUrl(httpServletRequest, dm.getRight(), false);
             logger.debug("Proxying {}", relUrl);
-            String workspace = StringUtils.substringBefore(relUrl, "/");
-            relUrl = StringUtils.substringAfter(relUrl, "/");
-            String lang = StringUtils.substringBefore(relUrl, "/");
-            relUrl = StringUtils.substringAfter(relUrl, "/");
-            incomingRequest.setAttribute("jahia.language", lang);
-            incomingRequest.setAttribute("jahia.workspace", workspace);
+            if (extCall) {
+                String mode = StringUtils.substringBefore(relUrl, "/");
+                relUrl = StringUtils.substringAfter(relUrl, "/");
+                String lang = StringUtils.substringBefore(relUrl, "/");
+                relUrl = StringUtils.substringAfter(relUrl, "/");
+
+                if (!LanguageCodeConverters.LANGUAGE_PATTERN.matcher(lang).matches()) {
+                    mode += "/" + lang;
+                    lang = StringUtils.substringBefore(relUrl, "/");
+                    relUrl = StringUtils.substringAfter(relUrl, "/");
+                }
+                incomingRequest.setAttribute("jahia.language", lang);
+                incomingRequest.setAttribute("jahia.mode", mode);
+            }
             CloseableHttpResponse driverResponse = dm.getLeft().proxy(relUrl, incomingRequest);
             responseSender.sendResponse(driverResponse, incomingRequest, httpServletResponse);
         } catch (HttpErrorPage e) {
