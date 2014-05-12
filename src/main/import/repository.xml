@@ -21,6 +21,14 @@
                             <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
                             <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
                         </Portal-Factory-icon.png>
+                        <esigate-icon.png j:height="16"
+                                 j:width="16"
+                                 jcr:mixinTypes="jmix:image"
+                                 jcr:primaryType="jnt:file">
+                            <jcr:content jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                        </esigate-icon.png>
                     </files>
                     <contents jcr:primaryType="jnt:contentFolder"/>
                     <server-settings-base j:view="serverSettings"
@@ -38,6 +46,7 @@
                         <esigate j:applyOn="jnt:globalSettings"
                         j:defaultTemplate="false"
                         j:hiddenTemplate="false"
+                           j:icon="/modules/portal-factory_esigate-filter/templates/files/esigate-icon.png"
                            j:titleKey="serverSettings.esigateSettings"
                         j:view="serverSettings"
                            jcr:mixinTypes="jmix:rbTitle"

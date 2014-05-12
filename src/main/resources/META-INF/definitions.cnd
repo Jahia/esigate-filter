@@ -3,8 +3,6 @@
 
 [jmix:esiComponentContent] > jmix:droppableContent, jmix:accessControllableContent mixin
 
-[jnt:esiFragmentArea] > jnt:area, jmix:esiComponentContent
-
 [jnt:esiFragmentList] > jnt:contentList, jmix:esiComponentContent
 
 //---------------------------------------------------------
