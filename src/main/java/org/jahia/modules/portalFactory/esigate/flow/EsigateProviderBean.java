@@ -132,6 +132,9 @@ public class EsigateProviderBean implements Serializable {
         if (remoteUrlBase.isEmpty()) {
             messages.addMessage(new MessageBuilder().error().source("remoteUrlBase").
                     code("serverSettings.esigateSettings.remoteUrlBase.notEmpty").build());
+        } else if (!remoteUrlBase.endsWith("/")) {
+            messages.addMessage(new MessageBuilder().error().source("remoteUrlBase").
+                    code("serverSettings.esigateSettings.remoteUrlBase.endsWithSlash").build());
         } else {
             try {
                 new URL(remoteUrlBase);
