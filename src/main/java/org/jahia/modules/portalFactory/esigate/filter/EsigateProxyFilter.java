@@ -58,58 +58,61 @@ public class EsigateProxyFilter extends AbstractServletFilter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        if(!esigateService.isEnabled()){
+            chain.doFilter(request, response);
+        }else {
+            HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        boolean extCall = httpServletRequest.getServletPath().startsWith("/ext");
-        if (extCall && ((HttpServletRequest) request).getMethod().equals("POST")) {
-            httpServletRequest = new HttpServletRequestWithGetMethod(httpServletRequest);
-        }
-
-        IncomingRequest incomingRequest = requestFactory.create(httpServletRequest, httpServletResponse, chain);
-
-        if (extCall && request.getInputStream().available() == 0 && request.getContentLength() > 0) {
-            // Recreate an input stream from parameters if it has been read already.
-            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-            for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
-                for (String value : entry.getValue()) {
-                    parameters.add(new BasicNameValuePair(entry.getKey(), value));
-                }
+            boolean extCall = httpServletRequest.getServletPath().startsWith("/ext");
+            if (extCall && ((HttpServletRequest) request).getMethod().equals("POST")) {
+                httpServletRequest = new HttpServletRequestWithGetMethod(httpServletRequest);
             }
-            String encoded = URLEncodedUtils.format(parameters, incomingRequest.getEntity().getContentEncoding().getValue());
-            InputStreamEntity entity = new InputStreamEntity(new ByteArrayInputStream(encoded.getBytes()), encoded.length());
-            entity.setContentEncoding(incomingRequest.getEntity().getContentEncoding().getValue());
-            entity.setContentType(incomingRequest.getEntity().getContentType().getValue());
-            incomingRequest.setEntity(entity);
-        }
 
-        Pair<Driver, UriMapping> dm = null;
-        try {
-            dm = driverSelector.selectProvider(httpServletRequest, false);
-            String relUrl = RequestUrl.getRelativeUrl(httpServletRequest, dm.getRight(), false);
-            logger.debug("Proxying {}", relUrl);
-            if (extCall) {
-                String mode = StringUtils.substringBefore(relUrl, "/");
-                relUrl = StringUtils.substringAfter(relUrl, "/");
-                String lang = StringUtils.substringBefore(relUrl, "/");
-                relUrl = StringUtils.substringAfter(relUrl, "/");
+            IncomingRequest incomingRequest = requestFactory.create(httpServletRequest, httpServletResponse, chain);
 
-                if (!LanguageCodeConverters.LANGUAGE_PATTERN.matcher(lang).matches()) {
-                    mode += "/" + lang;
-                    lang = StringUtils.substringBefore(relUrl, "/");
+            if (extCall && request.getInputStream().available() == 0 && request.getContentLength() > 0) {
+                // Recreate an input stream from parameters if it has been read already.
+                List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+                for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+                    for (String value : entry.getValue()) {
+                        parameters.add(new BasicNameValuePair(entry.getKey(), value));
+                    }
+                }
+                String encoded = URLEncodedUtils.format(parameters, incomingRequest.getEntity().getContentEncoding().getValue());
+                InputStreamEntity entity = new InputStreamEntity(new ByteArrayInputStream(encoded.getBytes()), encoded.length());
+                entity.setContentEncoding(incomingRequest.getEntity().getContentEncoding().getValue());
+                entity.setContentType(incomingRequest.getEntity().getContentType().getValue());
+                incomingRequest.setEntity(entity);
+            }
+
+            Pair<Driver, UriMapping> dm = null;
+            try {
+                dm = driverSelector.selectProvider(httpServletRequest, false);
+                String relUrl = RequestUrl.getRelativeUrl(httpServletRequest, dm.getRight(), false);
+                logger.debug("Proxying {}", relUrl);
+                if (extCall) {
+                    String mode = StringUtils.substringBefore(relUrl, "/");
                     relUrl = StringUtils.substringAfter(relUrl, "/");
+                    String lang = StringUtils.substringBefore(relUrl, "/");
+                    relUrl = StringUtils.substringAfter(relUrl, "/");
+
+                    if (!LanguageCodeConverters.LANGUAGE_PATTERN.matcher(lang).matches()) {
+                        mode += "/" + lang;
+                        lang = StringUtils.substringBefore(relUrl, "/");
+                        relUrl = StringUtils.substringAfter(relUrl, "/");
+                    }
+                    incomingRequest.setAttribute("jahia.language", lang);
+                    incomingRequest.setAttribute("jahia.mode", mode);
                 }
-                incomingRequest.setAttribute("jahia.language", lang);
-                incomingRequest.setAttribute("jahia.mode", mode);
-            }
-            CloseableHttpResponse driverResponse = dm.getLeft().proxy(relUrl, incomingRequest);
-            responseSender.sendResponse(driverResponse, incomingRequest, httpServletResponse);
-        } catch (HttpErrorPage e) {
-            if (!httpServletResponse.isCommitted()) {
-                responseSender.sendResponse(e.getHttpResponse(), incomingRequest, httpServletResponse);
+                CloseableHttpResponse driverResponse = dm.getLeft().proxy(relUrl, incomingRequest);
+                responseSender.sendResponse(driverResponse, incomingRequest, httpServletResponse);
+            } catch (HttpErrorPage e) {
+                if (!httpServletResponse.isCommitted()) {
+                    responseSender.sendResponse(e.getHttpResponse(), incomingRequest, httpServletResponse);
+                }
             }
         }
-
     }
 
     @Override

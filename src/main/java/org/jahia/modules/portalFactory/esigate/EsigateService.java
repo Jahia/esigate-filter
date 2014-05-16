@@ -5,6 +5,7 @@ import com.google.common.io.Resources;
 import org.apache.commons.lang.StringUtils;
 import org.esigate.DriverFactory;
 import org.jahia.api.Constants;
+import org.jahia.bin.Jahia;
 import org.jahia.data.templates.JahiaTemplatesPackage;
 import org.jahia.services.content.JCRCallback;
 import org.jahia.services.content.JCRNodeWrapper;
@@ -14,10 +15,15 @@ import org.jahia.services.templates.JahiaTemplateManagerService;
 import org.jahia.settings.SettingsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.ServletContextAware;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringReader;
@@ -33,6 +39,7 @@ public class EsigateService implements InitializingBean {
     private static Logger logger = LoggerFactory.getLogger(EsigateService.class);
 
     JahiaTemplateManagerService jahiaTemplateManagerService;
+    ServletContext servletContext;
 
     private EsigateSettings settings;
 
@@ -57,7 +64,7 @@ public class EsigateService implements InitializingBean {
 
     public void reloadDefault(HttpServletRequest request) {
         EsigateSettings defaultSettings = new EsigateSettings();
-        defaultSettings.setServiceEnabled(false);
+        defaultSettings.setServiceEnabled(true);
         defaultSettings.setConfig(getDefaultConfig(request));
         store(defaultSettings);
     }
@@ -132,7 +139,8 @@ public class EsigateService implements InitializingBean {
             if (port == 0) {
                 port = request.getServerPort();
             }
-            config += "remoteUrlBase=http://localhost:" + port + "/" + settingsBean.getServletContext().getContextPath() + "\n";
+            String context = settingsBean.getServletContext().getContextPath();
+            config += "remoteUrlBase=http://localhost:" + port + (StringUtils.isNotEmpty(context) ? context : "/") + "\n";
             return config;
         } catch (IOException e) {
             logger.error("Unable to load default esigate properties from esigate.properties file", e);
