@@ -185,7 +185,7 @@ public class EsigateService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!LicenseCheckerService.Stub.isAllowed("org.jahia.portal-factory")) {
+        if (!LicenseCheckerService.Stub.isAllowed("org.jahia.portal")) {
             throw new LicenseCheckException("No license found for portal factory");
         }
         load();
