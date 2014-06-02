@@ -5,8 +5,9 @@ import com.google.common.io.Resources;
 import org.apache.commons.lang.StringUtils;
 import org.esigate.DriverFactory;
 import org.jahia.api.Constants;
-import org.jahia.bin.Jahia;
 import org.jahia.data.templates.JahiaTemplatesPackage;
+import org.jahia.security.license.LicenseCheckException;
+import org.jahia.security.license.LicenseCheckerService;
 import org.jahia.services.content.JCRCallback;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -15,11 +16,7 @@ import org.jahia.services.templates.JahiaTemplateManagerService;
 import org.jahia.settings.SettingsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.web.context.ServletContextAware;
 
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
@@ -188,6 +185,9 @@ public class EsigateService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        if (!LicenseCheckerService.Stub.isAllowed("org.jahia.portal-factory")) {
+            throw new LicenseCheckException("No license found for portal factory");
+        }
         load();
     }
 
