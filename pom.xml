@@ -102,6 +102,16 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>jahia-enterprise-releases</id>
+      <url>https://devtools.jahia.com/nexus/content/repositories/jahia-enterprise-releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>jahia-enterprise-snapshots</id>
+      <url>https://devtools.jahia.com/nexus/content/repositories/jahia-enterprise-snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>  
   <repositories>
     <repository>
       <releases>
