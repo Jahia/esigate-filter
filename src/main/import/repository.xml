@@ -35,7 +35,7 @@
                                   jcr:mixinTypes="jmix:useUILocale"
                                   jcr:primaryType="jnt:template">
                         <portal-factory j:hiddenTemplate="false"
-                               j:icon="/modules/portal-factory_esigate-filter/templates/files/Portal-Factory-icon.png"
+                               j:icon="/modules/esigate-filter/templates/files/Portal-Factory-icon.png"
                                j:titleKey="serverSettings.portalfactory"
                                jcr:mixinTypes="jmix:rbTitle"
                                jcr:primaryType="jnt:template">
@@ -46,7 +46,7 @@
                         <esigate j:applyOn="jnt:globalSettings"
                         j:defaultTemplate="false"
                         j:hiddenTemplate="false"
-                           j:icon="/modules/portal-factory_esigate-filter/templates/files/esigate-icon.1.png"
+                           j:icon="/modules/esigate-filter/templates/files/esigate-icon.1.png"
                            j:titleKey="serverSettings.esigateSettings"
                         j:view="serverSettings"
                            jcr:mixinTypes="jmix:rbTitle"
