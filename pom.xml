@@ -53,15 +53,15 @@
     <version>7.0.0.1-SNAPSHOT</version>
   </parent>
   <groupId>org.jahia.modules</groupId>
-  <artifactId>portal-factory_esigate-filter</artifactId>
+  <artifactId>esigate-filter</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Portal factory - esigate filter</name>
   <description>This is the custom module (Portal factory - esigate filter) for running on a Digital Factory server.</description>
   <scm>
-    <connection>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</connection>
-    <developerConnection>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</developerConnection>
-    <url>scm:git:git@github.com:Jahia/portal-factory_esigate-filter.git</url>
+    <connection>scm:git:git@github.com:Jahia/esigate-filter.git</connection>
+    <developerConnection>scm:git:git@github.com:Jahia/esigate-filter.git</developerConnection>
+    <url>scm:git:git@github.com:Jahia/esigate-filter.git</url>
   </scm>
   <dependencies>
     <dependency>

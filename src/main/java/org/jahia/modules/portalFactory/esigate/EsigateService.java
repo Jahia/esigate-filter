@@ -219,7 +219,7 @@ public class EsigateService implements InitializingBean {
     }
 
     private JahiaTemplatesPackage getCurrentJahiaTemplatePackage() {
-        return jahiaTemplateManagerService.getTemplatePackageRegistry().lookupById("portal-factory_esigate-filter");
+        return jahiaTemplateManagerService.getTemplatePackageRegistry().lookupById("esigate-filter");
     }
 
     public EsigateSettings getSettings() {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
     <modules jcr:primaryType="jnt:modules">
-        <portal-factory_esigate-filter j:dependencies="default serverSettings"
+        <esigate-filter j:dependencies="default serverSettings"
                                      j:modulePriority="0"
                                      j:moduleType="module"
                                      j:title="Portal factory - esigate filter"
@@ -68,6 +68,6 @@
                     </server-settings-base>
                 </templates>
                 
-            </portal-factory_esigate-filter>
+            </esigate-filter>
     </modules>
 </content>
