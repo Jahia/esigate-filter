@@ -92,15 +92,12 @@ public class JahiaEsiExtension implements Extension, IEventListener {
             public void render(DriverRequest originalRequest, String src, Writer out) throws IOException, HttpErrorPage {
                 final String mode = originalRequest.getOriginalRequest().getAttribute("jahia.mode");
                 final String language = originalRequest.getOriginalRequest().getAttribute("jahia.language");
-                if (!src.contains("<esi:") && defaultPageInclude != null && originalRequest.getOriginalRequest().getAttribute("jahia.provider.processed") == null) {
+                if (!src.contains("<esi:") && defaultPageInclude != null) {
                     src = "<esi:include src=\"$(PROVIDER{default})/cms/$(jahia.mode)/$(jahia.language)" + defaultPageInclude + "\">" +
                             "<esi:replace fragment=\"" + defaultFragmentReplace + "\">" +
                             src +
                             "</esi:replace>" +
                             "</esi:include>";
-                }
-                if (originalRequest.getDriver().getConfiguration().getInstanceName().equals("default")) {
-                    originalRequest.getOriginalRequest().setAttribute("jahia.provider.processed", true);
                 }
 
                 StringBuffer sb1 = new StringBuffer();
@@ -123,9 +120,11 @@ public class JahiaEsiExtension implements Extension, IEventListener {
                 esiMatcher.appendTail(sb1);
                 src = sb1.toString();
 
-                String visibleBaseURL = originalRequest.getDriver().getConfiguration().getVisibleBaseURL(baseUrl);
-                if (visibleBaseURL != null && !visibleBaseURL.equals(baseUrl)) {
-                    visibleBaseURL = visibleBaseURL.replace("$(jahia.mode)", mode).replace("$(jahia.language)", language);
+                // if it's contain a esi:include tag it's an external app fragment, URLs need to be rewrite
+                // if not it's include page fragment coming from main app, URLs have to stay the same
+                if (src.contains("<esi:include")) {
+                    String visibleBaseURL = originalRequest.getDriver().getConfiguration().getVisibleBaseURL(baseUrl)
+                            .replace("$(jahia.mode)", mode).replace("$(jahia.language)", language);
                     Properties p = new Properties();
                     p.setProperty(Parameters.VISIBLE_URL_BASE.getName(), visibleBaseURL);
                     UrlRewriter urlRewriter = new UrlRewriter(p);
