@@ -122,9 +122,9 @@ public class JahiaEsiExtension implements Extension, IEventListener {
 
                 // if it's contain a esi:include tag it's an external app fragment, URLs need to be rewrite
                 // if not it's include page fragment coming from main app, URLs have to stay the same
-                if (src.contains("<esi:include")) {
-                    String visibleBaseURL = originalRequest.getDriver().getConfiguration().getVisibleBaseURL(baseUrl)
-                            .replace("$(jahia.mode)", mode).replace("$(jahia.language)", language);
+                String visibleBaseURL = originalRequest.getDriver().getConfiguration().getVisibleBaseURL(baseUrl);
+                if (visibleBaseURL != null && !visibleBaseURL.equals(baseUrl) && src.contains("<esi:include")) {
+                    visibleBaseURL = visibleBaseURL.replace("$(jahia.mode)", mode).replace("$(jahia.language)", language);
                     Properties p = new Properties();
                     p.setProperty(Parameters.VISIBLE_URL_BASE.getName(), visibleBaseURL);
                     UrlRewriter urlRewriter = new UrlRewriter(p);
