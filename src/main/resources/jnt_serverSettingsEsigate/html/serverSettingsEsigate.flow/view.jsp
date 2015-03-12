@@ -72,5 +72,5 @@
 
 <script type="text/javascript">
     var configCodeMirror = CodeMirror.fromTextArea(document.getElementById("config"), {mode: "properties", lineNumbers: true, matchBrackets: true, readOnly: false});
-    configCodeMirror.setSize("100%", "300px");
+    configCodeMirror.setSize("100%", "auto");
 </script>
