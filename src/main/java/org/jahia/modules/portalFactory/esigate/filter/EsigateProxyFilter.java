@@ -129,10 +129,9 @@ public class EsigateProxyFilter extends AbstractServletFilter {
                 incomingRequest.setEntity(entity);
             }
 
-            Pair<Driver, UriMapping> dm = null;
             try {
-                dm = driverSelector.selectProvider(httpServletRequest, false);
-                String relUrl = RequestUrl.getRelativeUrl(httpServletRequest, dm.getRight(), false);
+                DriverSelector.ProviderContext dm = driverSelector.selectProvider(httpServletRequest, false);
+                String relUrl = dm.getRelUrl();
                 logger.debug("Proxying {}", relUrl);
                 if (extCall) {
                     String mode = StringUtils.substringBefore(relUrl, "/");
@@ -148,7 +147,7 @@ public class EsigateProxyFilter extends AbstractServletFilter {
                     incomingRequest.setAttribute("jahia.language", lang);
                     incomingRequest.setAttribute("jahia.mode", mode);
                 }
-                CloseableHttpResponse driverResponse = dm.getLeft().proxy(relUrl, incomingRequest);
+                CloseableHttpResponse driverResponse = dm.getDriver().proxy(relUrl, incomingRequest);
                 responseSender.sendResponse(driverResponse, incomingRequest, httpServletResponse);
             } catch (HttpErrorPage e) {
                 if (!httpServletResponse.isCommitted()) {
