@@ -148,6 +148,9 @@ public class EsigateProxyFilter extends AbstractServletFilter {
                     incomingRequest.setAttribute("jahia.language", lang);
                     incomingRequest.setAttribute("jahia.mode", mode);
                 }
+                if (!relUrl.startsWith("/") && !relUrl.equals("")) {
+                    relUrl = "/" + relUrl;
+                }
                 CloseableHttpResponse driverResponse = dm.getLeft().proxy(relUrl, incomingRequest);
                 responseSender.sendResponse(driverResponse, incomingRequest, httpServletResponse);
             } catch (HttpErrorPage e) {
