@@ -152,7 +152,7 @@ public class EsigateService implements InitializingBean {
                         esigateNode = session.getNode("/settings/esigate-server");
                         cfg.setServiceEnabled(esigateNode.hasProperty("j:enabled")
                                 && esigateNode.getProperty("j:enabled").getBoolean());
-                        cfg.setConfig(esigateNode.getPropertyAsString("j:config"));
+                        cfg.setConfig(esigateNode.hasProperty("j:config") ? esigateNode.getPropertyAsString("j:config") : "");
                     } catch (PathNotFoundException e) {
                         cfg.setServiceEnabled(false);
                         cfg.setConfig("");
