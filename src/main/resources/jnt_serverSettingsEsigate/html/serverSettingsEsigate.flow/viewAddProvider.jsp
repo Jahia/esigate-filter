@@ -36,7 +36,7 @@
         <label class="control-label" for="remoteUrlBase"><fmt:message key="serverSettings.esigateSettings.remoteUrlBase"/></label>
 
         <div class="controls">
-            <form:input path="remoteUrlBase" placeholder="http://localhost:8080/myapp"/>
+            <form:input path="remoteUrlBase" placeholder="http://localhost:8080/myapp/"/>
             <form:errors path="remoteUrlBase" cssClass="help-inline btn-danger"/>
         </div>
     </div>
