@@ -21,8 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.esigate.DriverFactory;
 import org.jahia.api.Constants;
 import org.jahia.data.templates.JahiaTemplatesPackage;
-import org.jahia.security.license.LicenseCheckException;
-import org.jahia.security.license.LicenseCheckerService;
 import org.jahia.services.content.JCRCallback;
 import org.jahia.services.content.JCRNodeWrapper;
 import org.jahia.services.content.JCRSessionWrapper;
@@ -200,9 +198,6 @@ public class EsigateService implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!LicenseCheckerService.Stub.isAllowed("org.jahia.esigate")) {
-            throw new LicenseCheckException("No license found for portal factory - Esigate");
-        }
         load();
     }
 

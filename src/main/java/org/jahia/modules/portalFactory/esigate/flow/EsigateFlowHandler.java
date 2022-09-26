@@ -15,7 +15,6 @@
  */
 package org.jahia.modules.portalFactory.esigate.flow;
 
-import org.hibernate.cache.ehcache.management.impl.BeanUtils;
 import org.jahia.modules.portalFactory.esigate.EsigateService;
 import org.jahia.modules.portalFactory.esigate.EsigateSettings;
 import org.jahia.settings.SettingsBean;
