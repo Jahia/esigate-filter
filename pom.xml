@@ -23,9 +23,9 @@
     <artifactId>jahia-modules</artifactId>
     <version>8.1.1.0</version>
   </parent>
-  <groupId>org.jahia.modules</groupId>
+  <groupId>org.jahia.community</groupId>
   <artifactId>esigate-filter</artifactId>
-  <version>2.2.0-SNAPSHOT</version>
+  <version>2.1.0</version>
   <packaging>bundle</packaging>
   <name>Portal factory - esigate filter</name>
   <description>This is the custom module (Portal factory - esigate filter) for running on a Digital Experience Manager server.</description>
@@ -37,7 +37,6 @@
   </scm>
   <properties>
     <require-capability>osgi.extender;filter:="(osgi.extender=org.jahia.bundles.blueprint.extender.config)"</require-capability>
-    <jahia-module-signature>MC0CFQCDsJmUgQ164BU66lkPjgWQ/ugw/gIUKxiU/bnf+8HmrfqdOUlQm/TXZ/E=</jahia-module-signature>
   </properties>
   <dependencies>
     <dependency>
